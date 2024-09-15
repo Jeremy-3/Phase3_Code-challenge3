@@ -57,3 +57,37 @@ class Venue:
         """
         CURSOR.execute(sql)
         CONN.commit()        
+        
+        
+class Consert:
+    
+    def __init__(self,band_id,venue_id,date,id=None):
+        self.id = id
+        self.band_id = band_id
+        self.venue_id = venue_id
+        self,date=date
+    
+    @classmethod
+    def create_table(cls):
+        sql = """
+            CREATE TABLE IF NOT EXISTS concerts (
+            id INTEGER PRIMARY KEY,
+            band_id INTEGER,
+            venue_id INTEGER,
+            date DATE,
+            FOREIGN KEY (band_id) REFERENCES bands(id),
+            FOREIGN KEY (venue_id) REFERENCES venues(id))
+        """
+        CURSOR.execute(sql)
+        CONN.commit()    
+        
+    @classmethod
+    def drop_table(cls):
+
+        sql = """
+            DROP TABLE IF EXISTS concerts;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()    
+        
+        
