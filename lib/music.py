@@ -24,11 +24,25 @@ class Band:
     def drop_table(cls):
         
         sql = """
-            DROP TABLE IF EXISTS departments;
+            DROP TABLE IF EXISTS bands;
         """
         CURSOR.execute(sql)
         CONN.commit()   
         
+    def save(self):
+        
+        sql = """
+            INSERT INTO bands (name, hometown)
+            VALUES (?, ?)
+        """
+        CURSOR.execute(sql, (self.name, self.hometown))
+        self.id = CURSOR.lastrowid
+        CONN.commit() 
+    @classmethod
+    def create(cls,name,hometown):
+        band = cls(name, hometown)
+        band.save()
+        return band       
 
 class Venue:
     def __init__(self, title, city, id=None):
@@ -58,6 +72,21 @@ class Venue:
         CURSOR.execute(sql)
         CONN.commit()        
         
+    def save(self):
+        sql = """
+            INSERT INTO venues (title, city)
+            VALUES (?, ?)
+        """
+        CURSOR.execute(sql, (self.title, self.city))
+        self.id = CURSOR.lastrowid
+        CONN.commit()    
+    
+    @classmethod
+    def create(cls, title, city):
+        venue = cls(title, city)
+        venue.save()
+        return venue
+    
         
 class Consert:
     
@@ -65,7 +94,10 @@ class Consert:
         self.id = id
         self.band_id = band_id
         self.venue_id = venue_id
-        self,date=date
+        self.date=date
+    
+    def __repr__(self):
+        return f"<The Consert {self.id}: {self.band_id}, {self.venue_id}, {self.date}>"
     
     @classmethod
     def create_table(cls):
@@ -90,4 +122,16 @@ class Consert:
         CURSOR.execute(sql)
         CONN.commit()    
         
-        
+    def save(self):
+        sql = """
+            INSERT INTO concerts (band_id, venue_id, date)
+            VALUES (?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.band_id, self.venue_id, self.date))
+        CONN.commit()    
+    
+    @classmethod
+    def create(cls, band_id, venue_id, date):
+        concert = cls(band_id, venue_id, date)
+        concert.save()
+        return concert    
