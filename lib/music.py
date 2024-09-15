@@ -44,6 +44,27 @@ class Band:
         band.save()
         return band       
 
+    def concerts(self):
+        sql = """
+            SELECT * FROM concerts
+            WHERE band_id = ?
+        """
+        CURSOR.execute(sql, (self.id, ))
+        concert_rows = CURSOR.fetchall()
+        return [Concert(row[0], row[1], row[2]) for row in concert_rows]
+    
+    def venues(self):
+        sql = """
+            SELECT * FROM venues
+            WHERE id IN (
+                SELECT venue_id FROM concerts
+                WHERE band_id = ?
+            )
+        """
+        CURSOR.execute(sql, (self.id,))
+        venue_rows = CURSOR.fetchall()
+        return [Venue(row[0], row[1]) for row in venue_rows] 
+
 class Venue:
     def __init__(self, title, city, id=None):
         self.id = id
@@ -87,8 +108,31 @@ class Venue:
         venue.save()
         return venue
     
+    def concerts(self):
+        sql = """
+            SELECT * FROM concerts
+            WHERE venue_id = ?
+        """
+        CURSOR.execute(sql, (self.id,))
+        band_rows = CURSOR.fetchall()
+        return [Concert(row[0], row[1], row[2]) for row in band_rows]
         
-class Consert:
+    def bands(self):
+        sql = """
+            SELECT * FROM bands
+            WHERE id IN (
+                SELECT band_id FROM concerts
+                WHERE venue_id = ?
+            )
+        """
+        CURSOR.execute(sql, (self.id, ))
+        band_rows = CURSOR.fetchall()
+        return [Band(row[0], row[1], row[2]) for row in band_rows]    
+    
+    
+    
+        
+class Concert:
     
     def __init__(self,band_id,venue_id,date,id=None):
         self.id = id
@@ -135,3 +179,21 @@ class Consert:
         concert = cls(band_id, venue_id, date)
         concert.save()
         return concert    
+    
+    def band(self):
+        sql = """
+            SELECT * FROM bands
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.band_id,))
+        band_row = CURSOR.fetchone()
+        return Band(band_row[0], band_row[1], band_row[2])
+        
+    def venue(self):
+        sql = """
+            SELECT * FROM venues
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.venue_id, ))
+        venue_row = CURSOR.fetchone()
+        return Venue(venue_row[0], venue_row[1], venue_row[2])    

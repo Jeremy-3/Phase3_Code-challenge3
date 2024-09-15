@@ -1,5 +1,5 @@
 from _init_ import CONN ,CURSOR
-from music import Band,Venue,Consert
+from music import Band,Venue,Concert
 
 
 
@@ -8,8 +8,8 @@ Band.drop_table()
 Band.create_table()
 Venue.drop_table()
 Venue.create_table()
-Consert.drop_table()
-Consert.create_table()
+Concert.drop_table()
+Concert.create_table()
 
 band1 = Band.create("The Beatles", "Liverpool")
 print(band1)
@@ -23,10 +23,10 @@ venue2 = Venue.create("Wembley Stadium", "London")
 print(venue2)
 
 
-consert1 = Consert.create(band1.id, venue1.id, "2023-06-01")
-consert2 = Consert.create(band2.id, venue2.id, "2023-07-04")
-print(consert1)
-print(consert2)
+concert1 = Concert.create(band1.id, venue1.id, "2023-06-01")
+concert2 = Concert.create(band2.id, venue2.id, "2023-07-04")
+print(concert1)
+print(concert2)
 
 
 
