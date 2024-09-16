@@ -51,7 +51,7 @@ class Band:
         """
         CURSOR.execute(sql, (self.id, ))
         concert_rows = CURSOR.fetchall()
-        return [Concert(row[0], row[1], row[2]) for row in concert_rows]
+        return [Concert(row[1], row[2], row[3],) for row in concert_rows]
     
     def venues(self):
         sql = """
@@ -115,7 +115,7 @@ class Venue:
         """
         CURSOR.execute(sql, (self.id,))
         band_rows = CURSOR.fetchall()
-        return [Concert(row[0], row[1], row[2]) for row in band_rows]
+        return [Concert(row[1], row[2], row[3]) for row in band_rows]
         
     def bands(self):
         sql = """
