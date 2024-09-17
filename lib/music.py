@@ -134,14 +134,15 @@ class Venue:
         
 class Concert:
     
-    def __init__(self,band_id,venue_id,date,id=None):
+    def __init__(self,band_id,venue_id,date,id=None,):
         self.id = id
         self.band_id = band_id
         self.venue_id = venue_id
         self.date=date
+        
     
     def __repr__(self):
-        return f"<The Consert {self.id}: {self.band_id}, {self.venue_id}, {self.date}>"
+        return f"<The Consert {self.id}: {self.band_id}, {self.venue_id}, {self.date} >"
     
     @classmethod
     def create_table(cls):
@@ -197,3 +198,20 @@ class Concert:
         CURSOR.execute(sql, (self.venue_id, ))
         venue_row = CURSOR.fetchone()
         return Venue(venue_row[0], venue_row[1], venue_row[2])    
+    
+    def hometown_show(self):
+        sql = '''
+        SELECT bands.hometown,
+        venues.city 
+        FROM bands
+        INNER JOIN concerts ON bands.id = concerts.band_id
+        INNER JOIN venues ON concerts.venue_id = venues.id
+        WHERE  bands.id = ?
+        '''
+        CURSOR.execute(sql,(self.band_id))
+        consert_row = CURSOR.fetchone()
+        if consert_row:
+            return consert_row[1] == consert_row[2]
+        return False
+        
+  

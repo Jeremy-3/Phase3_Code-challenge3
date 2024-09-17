@@ -11,13 +11,13 @@ Venue.create_table()
 Concert.drop_table()
 Concert.create_table()
 
-band1 = Band.create("The Beatles", "Liverpool")
+band1 = Band.create("The Foo Fighters", "California")
 print(band1)
-band2 = Band.create("The Rolling Stones", "London")
+band2 = Band.create("The Strokes", "Los Angeles")
 print(band2)
 
 
-venue1 = Venue.create("The O2", "London")
+venue1 = Venue.create("Allegiant", "Las Vegas")
 print(venue1)
 venue2 = Venue.create("Wembley Stadium", "London")
 print(venue2)
